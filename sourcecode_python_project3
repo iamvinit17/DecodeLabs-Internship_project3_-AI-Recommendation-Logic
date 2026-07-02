@@ -1,1 +1,129 @@
+import json
+
+# ------------------------------
+# Movie Dataset
+# ------------------------------
+
+movies = [
+    {
+        "title": "Interstellar",
+        "genre": ["Sci-Fi", "Adventure"],
+        "language": "English",
+        "rating": 9.0
+    },
+    {
+        "title": "Inception",
+        "genre": ["Sci-Fi", "Action"],
+        "language": "English",
+        "rating": 8.8
+    },
+    {
+        "title": "The Dark Knight",
+        "genre": ["Action", "Crime"],
+        "language": "English",
+        "rating": 9.1
+    },
+    {
+        "title": "Avengers: Endgame",
+        "genre": ["Action", "Adventure"],
+        "language": "English",
+        "rating": 8.6
+    },
+    {
+        "title": "3 Idiots",
+        "genre": ["Comedy", "Drama"],
+        "language": "Hindi",
+        "rating": 8.9
+    },
+    {
+        "title": "Dangal",
+        "genre": ["Drama", "Sports"],
+        "language": "Hindi",
+        "rating": 8.8
+    },
+    {
+        "title": "Bahubali",
+        "genre": ["Action", "Adventure"],
+        "language": "Hindi",
+        "rating": 8.3
+    },
+    {
+        "title": "KGF",
+        "genre": ["Action", "Crime"],
+        "language": "Hindi",
+        "rating": 8.4
+    },
+    {
+        "title": "Your Name",
+        "genre": ["Romance", "Fantasy"],
+        "language": "Japanese",
+        "rating": 8.7
+    },
+    {
+        "title": "Spirited Away",
+        "genre": ["Fantasy", "Adventure"],
+        "language": "Japanese",
+        "rating": 9.2
+    }
+]
+
+# ------------------------------
+# Recommendation Function
+# ------------------------------
+
+
+def recommend_movies(user_genre, user_language):
+    recommendations = []
+
+    for movie in movies:
+
+        score = 0
+
+        if user_genre.lower() in [g.lower() for g in movie["genre"]]:
+            score += 70
+
+        if user_language.lower() == movie["language"].lower():
+            score += 30
+
+        if score > 0:
+            recommendations.append({
+                "title": movie["title"],
+                "genre": ", ".join(movie["genre"]),
+                "language": movie["language"],
+                "rating": movie["rating"],
+                "score": score
+            })
+
+    recommendations.sort(key=lambda x: (x["score"], x["rating"]), reverse=True)
+
+    return recommendations
+
+
+# ------------------------------
+# Main Program
+# ------------------------------
+
+print("=" * 50)
+print("      AI MOVIE RECOMMENDATION SYSTEM")
+print("=" * 50)
+
+genre = input("Enter Favorite Genre: ")
+language = input("Enter Preferred Language: ")
+
+results = recommend_movies(genre, language)
+
+print("\nRecommended Movies\n")
+
+if len(results) == 0:
+    print("No recommendations found.")
+else:
+    for i, movie in enumerate(results, start=1):
+        print("-" * 40)
+        print(f"{i}. {movie['title']}")
+        print(f"Genre      : {movie['genre']}")
+        print(f"Language   : {movie['language']}")
+        print(f"Rating     : {movie['rating']}")
+        print(f"Match Score: {movie['score']}%")
+
+print("\nThank you for using the system.")
 
